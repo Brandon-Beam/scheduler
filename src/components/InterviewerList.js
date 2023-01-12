@@ -11,9 +11,11 @@ export default function InterviewerList(props) {
     selected={interviewer.id === props.value}
     setInterviewer={() => props.onChange(interviewer.id)}
   />)
+
   return (
-    <ul>
-      {Interviewers}
-    </ul>
+    <section>interviewer
+      <ul className="interviewers__list">
+        {Interviewers}
+      </ul></section>
   )
 }
