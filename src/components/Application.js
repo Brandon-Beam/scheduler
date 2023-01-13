@@ -13,18 +13,37 @@ export default function Application(props) {
     day: "Monday",
     days: [],
     // you may put the line below, but will have to remove/comment hardcoded appointments variable
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
 
   useEffect(() => {
     Promise.all([
       Axios.get('/api/days'),
-      Axios.get('/api/appointments')
+      Axios.get('/api/appointments'),
+      Axios.get('/api/interviewers')
     ]).then((all => {
-      setState({ ...state, days: all[0].data, appointments: all[1].data })
+      console.log(all[2].data)
+      setState({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data })
     }))
   }, []);
 
+
+
+  const appointments = getAppointmentsForDay(state, state.day);
+
+  const schedule = appointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
 
 
   return (
@@ -48,7 +67,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {getAppointmentsForDay(state, state.day).map((app) => <Appointment time={app.time} id={app.id} key={app.id} interview={app.interview} />)}
+        {schedule}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
