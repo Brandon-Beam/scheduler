@@ -9,10 +9,38 @@ import "components/Application.scss";
 export default function Application(props) {
   const setDay = day => setState({ ...state, day });
 
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return Axios.put(`/api/appointments/${id}`, { interview }).then(
+      setState({ ...state, appointments })
+    )
+  };
+
+  function cancelInterview(id) {
+    const appointment = {
+      ...state.appointments[id], interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    console.log(appointment)
+
+    return Axios.delete(`/api/appointments/${id}`).then(
+      setState({ ...state, appointments }))
+  }
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // you may put the line below, but will have to remove/comment hardcoded appointments variable
     appointments: {},
     interviewers: []
   });
@@ -23,7 +51,6 @@ export default function Application(props) {
       Axios.get('/api/appointments'),
       Axios.get('/api/interviewers')
     ]).then((all => {
-      console.log(all[2].data)
       setState({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data })
     }))
   }, []);
@@ -42,6 +69,8 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
