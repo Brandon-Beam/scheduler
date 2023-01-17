@@ -7,6 +7,7 @@ import useVisualMode from "hooks/useVisualMode"
 import Form from "./Form"
 import Status from "./Status"
 import Confirm from "./Confirm"
+import Error from "./Error"
 import { action } from "@storybook/addon-actions"
 
 
@@ -19,6 +20,9 @@ export default function Appointment(props) {
   const SAVING = "SAVING"
   const CONFIRM = "CONFIRM"
   const EDIT = "EDIT"
+  const ERROR_SAVE = "ERROR_SAVE"
+  const ERROR_DELETE = "ERROR_DELETE"
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -28,13 +32,17 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    transition(SAVING)
-    props.bookInterview(props.id, interview).then(() => transition(SHOW))
+    transition(SAVING, true)
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true))
   }
 
   function remove(id) {
-    transition(SAVING)
-    props.cancelInterview(id).then(() => transition(EMPTY))
+    transition(SAVING, true)
+    props.cancelInterview(id)
+      .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE, true))
   }
 
   return (
@@ -43,8 +51,8 @@ export default function Appointment(props) {
         {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
         {mode === SHOW && (
           <Show
-            student={props.interview.student}
-            name={props.interview.interviewer.name}
+            student={props?.interview?.student || ""}
+            name={props?.interview?.interviewer?.name || ""}
             onDelete={() => transition(CONFIRM)}
             onEdit={() => transition(EDIT)}
           />
@@ -63,6 +71,8 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onCancel={() => back(EMPTY)}
           onSave={save} />}
+        {mode === ERROR_SAVE && <Error message={"failed to save"} onClose={() => back()} />}
+        {mode === ERROR_DELETE && <Error message={"failed to delete"} onClose={() => transition(SHOW)} />}
       </Fragment>
     </article>
   )
