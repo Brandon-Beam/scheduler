@@ -16,7 +16,9 @@ export default function useApplicationData() {
     };
     return Axios.put(`/api/appointments/${id}`, { interview })
       .then(() => {
-        setState({ ...state, appointments })
+        const day = state.days.filter(id => id.name.includes(state.day))
+        day[0].spots = (day[0].spots - 1)
+        setState({ ...state, appointments, ...state.days })
       })
   };
 
@@ -30,7 +32,9 @@ export default function useApplicationData() {
     };
     return Axios.delete(`/api/appointments/${id}`)
       .then(() => {
-        setState({ ...state, appointments })
+        const day = state.days.filter(id => id.name.includes(state.day))
+        day[0].spots = (day[0].spots + 1)
+        setState({ ...state, appointments, ...state.days })
       })
       .catch((error) => {
         return Promise.reject(error);
