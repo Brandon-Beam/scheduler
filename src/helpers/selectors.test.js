@@ -6,13 +6,13 @@ const state = {
       id: 1,
       name: "Monday",
       appointments: [1, 2, 3],
-      interviewers: ["Sylvia Palmer"]
+      interviewers: [1]
     },
     {
       id: 2,
       name: "Tuesday",
       appointments: [4, 5],
-      interviewers: ["Sylvia Palmer", "Tori Malcolm"]
+      interviewers: [1, 2]
     }
   ],
   appointments: {
@@ -101,8 +101,8 @@ test.only("getInterviewersForDay returns an array with a length matching the num
 
 test.only("getInterviewersForDay returns an array containing the correct appointment objects", () => {
   const [first, second] = getInterviewersForDay(state, "Tuesday");
-  expect(first).toEqual("Sylvia Palmer");
-  expect(second).toEqual("Tori Malcolm");
+  expect(first).toEqual(state.interviewers["1"]);
+  expect(second).toEqual(state.interviewers["2"]);
 });
 
 test.only("getAppointmentsForDay returns an empty array when the days data is empty", () => {
