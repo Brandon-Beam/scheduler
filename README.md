@@ -4,7 +4,7 @@ interview scheduler app made to learn the basics of react, biggest project to da
 proud of this one, might not be the best but its more than i thought i could ever do
 
 !["initial page"](https://github.com/Brandon-Beam/scheduler/blob/master/docs/initial_screen.png?raw=true)
-!["appointment creation section"](https://github.com/Brandon-Beam/scheduler/blob/master/docs/create_appointment_field.png?raw=true)
+!["appointment edit section"](https://github.com/Brandon-Beam/scheduler/blob/master/docs/create_appointment_field.png?raw=true)
 !["page after booking"](https://github.com/Brandon-Beam/scheduler/blob/master/docs/booked_appointment.png?raw=true)
 
 ## Setup
