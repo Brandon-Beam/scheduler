@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import axios from "axios";
 
 export default function useApplicationData() {
   const setDay = day => setState({ ...state, day });
@@ -13,10 +13,18 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    return Axios.put(`/api/appointments/${id}`, { interview })
+    return axios.put(`/api/appointments/${id}`, { interview })
       .then(() => {
         const day = state.days.filter(id => id.name.includes(state.day))
-        day[0].spots = (day[0].spots - 1)
+        const appArray = day[0].appointments
+        let spotsUpdate = 0
+        for (const app of appArray) {
+          if (appointments[app].interview === null) {
+            spotsUpdate = spotsUpdate + 1
+            console.log(spotsUpdate)
+          }
+        }
+        day[0].spots = spotsUpdate
         setState({ ...state, appointments, ...state.days })
       })
   };
@@ -29,7 +37,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    return Axios.delete(`/api/appointments/${id}`)
+    return axios.delete(`/api/appointments/${id}`)
       .then(() => {
         const day = state.days.filter(id => id.name.includes(state.day))
         day[0].spots = (day[0].spots + 1)
@@ -49,9 +57,9 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      Axios.get('/api/days'),
-      Axios.get('/api/appointments'),
-      Axios.get('/api/interviewers')
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
     ]).then((all => {
       setState({ ...state, days: all[0].data, appointments: all[1].data, interviewers: all[2].data })
     }))
