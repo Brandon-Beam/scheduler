@@ -1,5 +1,5 @@
 import React from "react"
-
+// to be displayed when appointment empty, allows adding appointments 
 export default function Empty(props) {
   return (
     <main className="appointment__add">
@@ -11,4 +11,4 @@ export default function Empty(props) {
       />
     </main>
   )
-} 
+}; 

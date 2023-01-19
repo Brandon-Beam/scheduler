@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import classNames from "classnames";
 import "components/InterviewerListItem.scss"
-
+//lists possible interviewers
 export default function InterviewerListItem(props) {
   let interviewerClass = classNames("interviewers__item", {
     "interviewers__item--selected": props.selected
@@ -16,4 +16,4 @@ export default function InterviewerListItem(props) {
       {props.selected && props.name}
     </li>
   )
-}
+};

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
+//manages data for application
 export default function useApplicationData() {
   const setDay = day => setState({ ...state, day });
-
+  //books interview updates relevent spots
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -15,6 +15,9 @@ export default function useApplicationData() {
     };
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(() => {
+        //filters days array by name inside day object, then creates an array of appointments from day object.
+        //followed by looping through appointments array to check if corresponding appointment is null. if it is updates counter. 
+        //uses spotsUpdate counter to update spots left
         const day = state.days.filter(id => id.name.includes(state.day))
         const appArray = day[0].appointments
         let spotsUpdate = 0
@@ -27,7 +30,7 @@ export default function useApplicationData() {
         setState({ ...state, appointments, ...state.days })
       })
   };
-
+  //deletes interview and removes a spot
   function cancelInterview(id) {
     const appointment = {
       ...state.appointments[id], interview: null
@@ -45,7 +48,7 @@ export default function useApplicationData() {
       .catch((error) => {
         return Promise.reject(error);
       })
-  }
+  };
 
   const [state, setState] = useState({
     day: "Monday",
@@ -53,7 +56,7 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: []
   });
-
+  //gets data from server and updates state
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
@@ -64,4 +67,4 @@ export default function useApplicationData() {
     }))
   }, []);
   return { state, setDay, bookInterview, cancelInterview }
-}
+};

@@ -8,12 +8,9 @@ import Form from "./Form"
 import Status from "./Status"
 import Confirm from "./Confirm"
 import Error from "./Error"
-import { action } from "@storybook/addon-actions"
-
-
-
 
 export default function Appointment(props) {
+  //list of modes each appointment slot can be in
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE"
@@ -22,11 +19,11 @@ export default function Appointment(props) {
   const EDIT = "EDIT"
   const ERROR_SAVE = "ERROR_SAVE"
   const ERROR_DELETE = "ERROR_DELETE"
-
+  //sets initial mode and holds mode + related functions
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-
+  //saves appointment by calling BookInterview, changes visual modes related to this
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -37,7 +34,7 @@ export default function Appointment(props) {
       .then(() => transition(SHOW))
       .catch(() => transition(ERROR_SAVE, true))
   }
-
+  //handles visual changes for deletion, uses cancelInterview to remove from db
   function remove(id) {
     transition(SAVING, true)
     props.cancelInterview(id)
@@ -63,7 +60,7 @@ export default function Appointment(props) {
             onCancel={() => back(EMPTY)}
             onSave={save} />
         )}
-        {mode === SAVING && <Status />}
+        {mode === SAVING && <Status message={"Saving"} />}
         {mode === CONFIRM && <Confirm onCancel={() => transition(SHOW)} onConfirm={() => remove(props.id)} message={'are you sure?'} />}
         {mode === EDIT && <Form
           student={props.interview.student}
@@ -76,4 +73,4 @@ export default function Appointment(props) {
       </Fragment>
     </article>
   )
-}
+};

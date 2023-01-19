@@ -1,6 +1,6 @@
 import React from "react";
 import DayListItem from "./DayListItem";
-
+//goes over all days to populate DayListItem
 export default function DayList(props) {
   const days = props.days.map((day) => <DayListItem key={day.id}
     name={day.name}
@@ -14,4 +14,4 @@ export default function DayList(props) {
       {days}
     </ul>
   )
-}
+};

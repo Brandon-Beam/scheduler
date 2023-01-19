@@ -1,4 +1,5 @@
 import React from "react"
+//shows interview in slot
 export default function Show(props) {
   return (
     <main className="appointment__card appointment__card--show">
@@ -27,4 +28,4 @@ export default function Show(props) {
       </section>
     </main>
   )
-}
+};

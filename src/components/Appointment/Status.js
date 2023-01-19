@@ -1,5 +1,5 @@
 import React from "react"
-
+// loading spinner for showing site is working on it
 export default function (props) {
   return (
     <main className="appointment__card appointment__card--status">
@@ -11,4 +11,4 @@ export default function (props) {
       <h1 className="text--semi-bold">{props.message}</h1>
     </main>
   )
-}
+};
