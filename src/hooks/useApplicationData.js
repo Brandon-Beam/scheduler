@@ -21,7 +21,6 @@ export default function useApplicationData() {
         for (const app of appArray) {
           if (appointments[app].interview === null) {
             spotsUpdate = spotsUpdate + 1
-            console.log(spotsUpdate)
           }
         }
         day[0].spots = spotsUpdate
